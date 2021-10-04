@@ -14,10 +14,9 @@ class HomeController extends Controller
     {
         $products = (new Product())->getBestsellers();
 
-        var_dump($products);
-        exit();
+        $body = $this->twig->render('index.twig', ['products' => $products]);
 
-        //     $response->getBody()->write("Hello world!");
-        //     return $response;
+        $response->getBody()->write($body);
+        return $response;
     }
 }
