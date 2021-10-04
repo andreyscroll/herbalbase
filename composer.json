@@ -1,0 +1,14 @@
+
+{
+    "require": {
+        "slim/slim": "^4.8",
+        "slim/psr7": "^1.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Models\\": "app/models/",
+            "Controllers\\": "app/controllers/"
+        }
+    }
+
+}
