@@ -1,0 +1,47 @@
+{% extends 'layout.twig' %}
+{% block title %}{{ product.product_name }} by {{ product.brand_name }}{% endblock %}
+{% block description %}{{ product.seo_description }}{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>{{ product.product_name }}</h1>
+
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{{ product.img }}" alt="{{ product.product_name }}" class="img-fluid">
+            </div>
+            <div class="col-md-8">
+                <p>
+                    {% for category in productCategories %}
+                    <a href="/category/{{ category.slug }}" class="btn btn-outline-primary btn-sm mb-2">{{ category.name }}</a>
+                    {% endfor %}
+                    <a href="/brand/{{ product.brand_slug }}" class="btn btn-outline-secondary btn-sm mb-2">{{ product.brand_name }}</a>
+                </p>
+                <p><span class="fs-2">{{ product.price }} руб.</span></p>
+                <a href="{{ product.iherb_url }}" class="btn btn-success">Купить на iherb</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Описание</h2>
+                <p>{{ product.description_common | raw }}</p>
+
+                <div class="card border-success my-3">
+                    <div class="card-body">
+                        <h2>Как принимать</h2>
+                        <p>{{ product.description_uses | raw }}</p>
+                    </div>
+                </div>
+
+                <h3>Состав</h3>
+                <p>{{ product.description_ingred | raw }}</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

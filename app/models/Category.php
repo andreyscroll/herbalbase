@@ -10,8 +10,10 @@ class Category extends Model
         return $stmt->fetchAll();
     }
 
-    public function getCategory()
+    public function getCategory($slug)
     {
-        
+        $stmt = $this->conn->prepare("SELECT * FROM categories WHERE `slug` = :slug");
+        $stmt->execute([':slug' => $slug]);
+        return $stmt->fetch();
     }
 }
