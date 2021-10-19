@@ -16,6 +16,14 @@ class ProductController extends Controller
 
         $product = new Product();
         $productData = $product->getProductWithBrand($slug);
+
+        // 404 handle
+        if ($productData == false){
+            $body = $this->twig->render('404.twig');
+            $response->getBody()->write($body);
+            return $response->withStatus(404);
+        }
+
         $productCategories = $product->getProductCategories($slug);
 
         $body = $this->twig->render('product.twig', ['product' => $productData, 'productCategories' => $productCategories]);

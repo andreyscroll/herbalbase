@@ -15,11 +15,15 @@ class CategoryController extends Controller
         $slug = $args['slug'];
 
         $category = (new Category)->getCategory($slug);
-        $products = (new Product)->getProductsByCategory($slug);
 
-        // $product = new Product();
-        // $productData = $product->getProduct($slug);
-        // $productCategories = $product->getCategories($slug);
+        // 404 handle
+        if ($category == false){
+            $body = $this->twig->render('404.twig');
+            $response->getBody()->write($body);
+            return $response->withStatus(404);
+        }
+
+        $products = (new Product)->getProductsByCategory($slug);
 
         $body = $this->twig->render('category.twig', compact('category', 'products'));
 

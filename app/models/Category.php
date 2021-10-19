@@ -4,9 +4,9 @@ namespace Models;
 
 class Category extends Model
 {
-    public function getCategories()
+    public function getAll()
     {
-        $stmt = $this->conn->query("SELECT name, slug FROM categories LIMIT 10");
+        $stmt = $this->conn->query("SELECT name, slug FROM categories LIMIT 50");
         return $stmt->fetchAll();
     }
 

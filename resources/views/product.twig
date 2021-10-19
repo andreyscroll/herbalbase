@@ -1,12 +1,12 @@
 {% extends 'layout.twig' %}
-{% block title %}{{ product.product_name }} by {{ product.brand_name }}{% endblock %}
+{% block title %}Купить {{ product.product_name | capitalize}} от {{ product.brand_name }} в Новосибирске{% endblock %}
 {% block description %}{{ product.seo_description }}{% endblock %}
 
 {% block body %}
 
 <div class="row">
     <div class="col-md-12">
-        <h1>{{ product.product_name }}</h1>
+        <h1>{{ product.product_name | capitalize }}</h1>
 
         <div class="row">
             <div class="col-md-4">

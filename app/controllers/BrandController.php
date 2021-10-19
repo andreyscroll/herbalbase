@@ -15,11 +15,15 @@ class BrandController extends Controller
         $slug = $args['slug'];
 
         $brand = (new Brand)->getBrand($slug);
+
+        // 404 handle
+        if ($brand == false){
+            $body = $this->twig->render('404.twig');
+            $response->getBody()->write($body);
+            return $response->withStatus(404);
+        }
+
         $products = (new Product)->getProductsByBrand($slug);
-
-        // var_dump($brandWithProducts);
-
-        // $productCategories = $product->getCategories($slug);
 
         $body = $this->twig->render('brand.twig', compact('brand', 'products'));
         $response->getBody()->write($body);

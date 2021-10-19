@@ -24,6 +24,10 @@ class Product extends Model
         return $stmt->fetch();
     }
 
+    /**
+     * Get all categories by product
+     * 
+     */
     public function getProductCategories($slug)
     {
         $stmt = $this->conn->prepare("SELECT `categories`.*, 
@@ -37,15 +41,24 @@ class Product extends Model
         return $stmt->fetchAll();
     }
 
+    /**
+     * Get products by brand
+     *
+     */
     public function getProductsByBrand($slug)
     {
         $stmt = $this->conn->prepare("SELECT `products`.*
                                         FROM `brands` INNER JOIN `products` ON `brands`.`id` = `products`.`brand_id`
-                                        WHERE `brands`.`slug` = :slug LIMIT 10");
+                                        WHERE `brands`.`slug` = :slug
+                                        ORDER BY `products`.`rating` DESC, `products`.`reviews_count` DESC");
         $stmt->execute([':slug' => $slug]);
         return $stmt->fetchAll();
     }
 
+    /**
+     * Get products by category
+     * 
+     */
     public function getProductsByCategory($slug)
     {
         $stmt = $this->conn->prepare("SELECT `products`.*, 
@@ -53,7 +66,8 @@ class Product extends Model
                                             `product_category`.`category_id`
                                         FROM `products` INNER JOIN `product_category`
                                         ON `products`.`id` = `product_category`.`product_id`
-                                        WHERE `product_category`.`category_id` = (SELECT id FROM categories WHERE `slug` = :slug LIMIT 1)");
+                                        WHERE `product_category`.`category_id` = (SELECT id FROM categories WHERE `slug` = :slug LIMIT 1)
+                                        ORDER BY `products`.`rating` DESC, `products`.`reviews_count` DESC");
         $stmt->execute([':slug' => $slug]);
         return $stmt->fetchAll();
     }
