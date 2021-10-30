@@ -45,13 +45,16 @@ class Product extends Model
      * Get products by brand
      *
      */
-    public function getProductsByBrand($slug)
+    public function getProductsByBrand($slug, $limit = 50)
     {
         $stmt = $this->conn->prepare("SELECT `products`.*
                                         FROM `brands` INNER JOIN `products` ON `brands`.`id` = `products`.`brand_id`
                                         WHERE `brands`.`slug` = :slug
-                                        ORDER BY `products`.`rating` DESC, `products`.`reviews_count` DESC");
-        $stmt->execute([':slug' => $slug]);
+                                        ORDER BY `products`.`rating` DESC, `products`.`reviews_count` DESC
+                                        LIMIT :limit");
+        $stmt->bindParam(':slug', $slug);
+        $stmt->bindParam(':limit', $limit, \PDO::PARAM_INT);
+        $stmt->execute();
         return $stmt->fetchAll();
     }
 
@@ -59,7 +62,7 @@ class Product extends Model
      * Get products by category
      * 
      */
-    public function getProductsByCategory($slug)
+    public function getProductsByCategory($slug, $limit = 50)
     {
         $stmt = $this->conn->prepare("SELECT `products`.*, 
                                             `product_category`.`product_id`,
@@ -67,8 +70,23 @@ class Product extends Model
                                         FROM `products` INNER JOIN `product_category`
                                         ON `products`.`id` = `product_category`.`product_id`
                                         WHERE `product_category`.`category_id` = (SELECT id FROM categories WHERE `slug` = :slug LIMIT 1)
-                                        ORDER BY `products`.`rating` DESC, `products`.`reviews_count` DESC");
-        $stmt->execute([':slug' => $slug]);
+                                        ORDER BY `products`.`rating` DESC, `products`.`reviews_count` DESC
+                                        LIMIT :limit");
+        $stmt->bindParam(':slug', $slug);
+        $stmt->bindParam(':limit', $limit, \PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * 
+     *  Search products
+     */
+    public function search($key)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM products WHERE `product_name` LIKE :key LIMIT 10");
+        $key = "%{$key}%";
+        $stmt->execute([':key' => $key]);
         return $stmt->fetchAll();
     }
 }

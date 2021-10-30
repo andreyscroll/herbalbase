@@ -12,9 +12,15 @@ class HomeController extends Controller
 {
     public function __invoke(Request $request, Response $response)
     {
-        $products = (new Product())->getBestsellers();
+        $categories = (new Category)->getCategoriesByArray(['syvorotki', 'resveratrol', 'khlorella']);
+        $product = new Product;
 
-        $body = $this->twig->render('index.twig', ['products' => $products]);
+        // Подгружаем для каждой категории соответствующие товары
+        array_walk($categories, function(&$category) use ($product) {
+            $category['products'] = $product->getProductsByCategory($category['slug'], 4);
+        });
+
+        $body = $this->twig->render('index.twig', compact('categories'));
 
         $response->getBody()->write($body);
         return $response;

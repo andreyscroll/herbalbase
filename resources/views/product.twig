@@ -1,44 +1,84 @@
 {% extends 'layout.twig' %}
-{% block title %}Купить {{ product.product_name | capitalize}} от {{ product.brand_name }} в Новосибирске{% endblock %}
-{% block description %}{{ product.seo_description }}{% endblock %}
+{% block title %}Купить {{ productData.product_name | capitalize}} от {{ productData.brand_name }} в Новосибирске{% endblock %}
+{% block description %}{{ productData.seo_description }}{% endblock %}
+{% block updated_at %}{{ productData.updated_at | date("Y-m-d") }}{% endblock %}
 
 {% block body %}
 
 <div class="row">
     <div class="col-md-12">
-        <h1>{{ product.product_name | capitalize }}</h1>
+        <h1>{{ productData.product_name | capitalize }} / <span class="text-success">{{ productData.brand_name }}</span></h1>
 
         <div class="row">
             <div class="col-md-4">
-                <img src="{{ product.img }}" alt="{{ product.product_name }}" class="img-fluid">
+                <img src="{{ productData.img }}" alt="{{ productData.product_name }}" class="img-fluid">
             </div>
             <div class="col-md-8">
-                <p>
-                    {% for category in productCategories %}
+                <div id="categories" class="mb-3">
+                    {% for category in productData.categories %}
                     <a href="/category/{{ category.slug }}" class="btn btn-outline-primary btn-sm mb-2">{{ category.name }}</a>
                     {% endfor %}
-                    <a href="/brand/{{ product.brand_slug }}" class="btn btn-outline-secondary btn-sm mb-2">{{ product.brand_name }}</a>
-                </p>
-                <p><span class="fs-2">{{ product.price }} руб.</span></p>
-                <a href="{{ product.iherb_url }}" class="btn btn-success">Купить на iherb</a>
+                    <a href="/brand/{{ productData.brand_slug }}" class="btn btn-outline-secondary btn-sm mb-2">{{ productData.brand_name }}</a>
+                </div>
+                <div id="price" class="mb-3">
+                    <span class="fs-2">{{ productData.price }} руб.</span>
+                </div>
+                <div id="reviews" class="mb-3">
+                    <span class="fs-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                    </svg> {{ productData.rating }}</span>
+                    <span>(Отзывов: <a href="{{ productData.reviews_url }}" target="_blank">{{ productData.reviews_count }}</a>)</span>
+                </div>
+                
+                <a href="{{ productData.iherb_url }}" class="btn btn-success">Купить на iherb</a>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
                 <h2>Описание</h2>
-                <p>{{ product.description_common | raw }}</p>
+                <p>{{ productData.description_common | raw }}</p>
 
                 <div class="card border-success my-3">
                     <div class="card-body">
                         <h2>Как принимать</h2>
-                        <p>{{ product.description_uses | raw }}</p>
+                        <p>{{ productData.description_uses | raw }}</p>
                     </div>
                 </div>
 
                 <h3>Состав</h3>
-                <p>{{ product.description_ingred | raw }}</p>
+                <p>{{ productData.description_ingred | raw }}</p>
+
+                <div class="border-top pt-3">
+                    {{ productData.additive_info | raw }}
+                </div>
+
             </div>
+        </div>
+
+        <h3>Похожие товары:</h3>
+
+        <div class="row row-cols-md-4">
+            {% for product in productData.relatedProducts %}
+                <div class="col">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <img src="{{ product.img }}" class="w-50 d-block m-auto" alt="{{ product.title }}">
+                            <a href="/{{ product.slug }}" class="text-decoration-none text-success" title="{{ product.product_name }}">
+                                <h3 class="card-title fs-5">{{ product.product_name | capitalize }}</h3>
+                            </a>
+                            <p class="card-text">{{ product.brand }}</p>
+                            <p class="card-text">{{ product.price }} руб.</p>
+                            <p class="fs-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
+                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                            </svg>
+                            {{ product.rating }}
+                            </p>
+                        </div>
+                    </div> 
+                </div>
+            {% endfor %}
         </div>
 
     </div>

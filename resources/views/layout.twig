@@ -8,7 +8,7 @@
     <meta property="og:title" content="" />
     <meta property="og:url" content="" />
     <meta property="article:published_time" content="" />
-    <meta property="article:modified_time" content="" />
+    <meta property="article:modified_time" content="{% block updated_at %}{% endblock %}" />
     <meta property="og:site_name" content="HerbalBase.ru" />
 
     <link rel="stylesheet" href="/public/assets/css/bootstrap.min.css">
@@ -17,6 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Merienda&family=Roboto+Slab:wght@200&display=swap" rel="stylesheet">
 </head>
 <body>
+<div id="main">
 <div class="wrapper">
 <div class="container">
     <div class="row">
@@ -37,8 +38,14 @@
             <section class="top-menu my-4">
                 <div class="row">
                     <div class="col-12">
+
+                        {% if errors.status %}
+                            <div class="alert alert-danger mb-2" role="alert">
+                                {{ errors.message }}
+                            </div>
+                        {% endif %}
     
-                        <nav class="navbar navbar-expand-lg navbar-light bg-green px-3">
+                        <nav class="navbar navbar-expand-lg navbar-light shadow-sm rounded bg-grey px-3">
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
                             </button>
@@ -59,9 +66,13 @@
                                     </li> #}
     
                                 </ul>
-                                <form method="GET" action="#" class="d-flex">
-                                    <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
-                                    <button class="btn btn-outline-light" type="submit">Search</button>
+                                <form method="POST" action="/search" class="d-flex">
+                                    <input class="form-control me-2" type="search" name="search" placeholder="" aria-label="Search">
+                                    <button class="btn btn-secondary" type="submit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                        </svg>
+                                    </button>
                                 </form>
                             </div>
                         </nav>
@@ -78,8 +89,6 @@
     </div>
 </div>
 
-    
-
 <section class="footer text-center bg-light p-5">
     <div class="container-fluid">
         <div class="row">
@@ -91,6 +100,16 @@
 </section>
 
 </div>
+</div>
+
 <script src="/public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script>
+    let tables = document.getElementsByTagName("table");
+    for (let i = 0; i < tables.length; i++) {
+        tables[i].classList.add("table");
+    };
+</script>
+{% block bottom %}{% endblock %}
 </body>
 </html>

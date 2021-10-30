@@ -24,10 +24,14 @@ class ProductController extends Controller
             return $response->withStatus(404);
         }
 
-        $productCategories = $product->getProductCategories($slug);
+        $productData['categories'] = $product->getProductCategories($slug);
 
-        $body = $this->twig->render('product.twig', ['product' => $productData, 'productCategories' => $productCategories]);
+        $firstCategory = $productData['categories'][0];
+        $productData['relatedProducts'] = $product->getProductsByCategory($firstCategory['slug'], 4);
 
+        // dd($productData);
+
+        $body = $this->twig->render('product.twig', compact('productData'));
         $response->getBody()->write($body);
         return $response;
     }

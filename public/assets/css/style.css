@@ -4,6 +4,9 @@
 .bg-green {
     background-color: #d4e157 !important;
 }
+.bg-grey {
+    background-color: #f6f6f6 !important;
+}
 
 h1, h2, h3, h4, h5 {
     font-family: 'Roboto Slab', serif;
