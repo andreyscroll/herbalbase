@@ -1,0 +1,39 @@
+{% extends 'layout.twig' %}
+{% block title %}{{ herb.name }} - Каталог лекарственных растений HerbalBase{% endblock %}
+{% block description %}{% endblock %}
+{% block updated_at %}{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>{{ herb.name }}</h1>
+
+        <div class="mb-3">
+            {% for category in herbCategories %}
+            <a href="/herbs/category/{{ category.slug }}" class="btn btn-outline-secondary btn-sm mb-1">{{ category.name | capitalize }}</a>
+            {% endfor %}
+        </div>
+    
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6 m-auto mb-4">
+                        <img src="/storage/app/herbs/images/{{ herb.img }}" class="img-fluid rounded-2" alt="{{ herb.name }} фото в природе">
+                    </div>
+                </div>
+                {{ herb.content | raw }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row row-cols-md-4">
+    {% for category in categories %}
+    <div class="col">
+        <h2>{{ category.name | capitalize }}</h2>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

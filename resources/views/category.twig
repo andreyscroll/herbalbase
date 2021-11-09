@@ -8,14 +8,14 @@
     <div class="col-md-12">
         <h1>{{ category.name }}</h1>
 
-        <div class="row row-cols-md-4">
+        <div class="row row-cols-md-4 g-3">
         {% for product in products %}
             <div class="col">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-body">
                         <img src="{% if product.img is empty %}public/images/sale.png{% else %}{{ product.img }}{% endif %}" class="w-50 d-block m-auto" alt="{{ product.title }}">
                         <a href="/{{ product.slug }}">
-                            <h2 class="card-title fs-4">{{ product.product_name }}</h2>
+                            <h2 class="card-title fs-5">{{ product.product_name | capitalize }}</h2>
                         </a>
                         <!-- <p class="card-text">{{ product.brand }}</p> -->
                         <p class="card-text">{{ product.price }} руб.</p>

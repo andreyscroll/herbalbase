@@ -1,0 +1,45 @@
+{% extends 'layout.twig' %}
+{% block title %}Лекарственные травы, имеющие {{ category.name }} действие{% endblock %}
+{% block description %}{% endblock %}
+{% block updated_at %}{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-md-8">
+        <h1>Лекарственные травы, имеющие {{ category.name }} действие</h1>
+        <div class="row row-cols-md-2 g-3">
+            {% for herb in herbsByCategory %}
+            <div class="col">
+
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="/storage/app/herbs/images/thumbs/thumb_{{ herb.img }}" class="img-fluid" alt="{{ herb.name }}">
+                            </div>
+                            <div class="col-md-8">
+                                <a href="/herbs/{{ herb.slug }}" class="text-success">
+                                    <h2 class="my-0 fs-5">{{ herb.name }}</h2></a>
+                                <small class="text-secondary fst-italic">{{ herb.name_lat }}</small>
+                                <p class="card-text">{{ herb.description | slice(0, 90) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h3>Лечебное действие:</h3>
+        {% for menuCategory in categories %}
+        <a href="/herbs/category/{{ menuCategory.slug }}" class="btn {% if menuCategory.slug == category.slug %}btn-outline-primary{% else %}btn-outline-secondary{% endif %} btn-sm mb-2">
+            {{ menuCategory.name | capitalize }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

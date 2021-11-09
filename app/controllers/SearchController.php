@@ -9,26 +9,27 @@ use Models\Category;
 use Models\Product;
 
 use Helpers\Validator;
+use Helpers\Str;
 
 class SearchController extends Controller
 {
     public function __invoke(Request $request, Response $response)
     {
-        $query = $request->getParsedBody()['search'];
+        $query = Str::clearInput($request->getParsedBody()['search']);
 
         $searchData = [];
         $errors = [];
 
         if(Validator::validateSearchQuery($query)) {
-            $searchData['products'] = (new Product)->search($searchKey);
-            $searchData['categories'] = (new Category)->search($searchKey);
+            $searchData['products'] = (new Product)->search($query);
+            $searchData['categories'] = (new Category)->search($query);
             $errors['status'] = false;
         } else {
             $errors['status'] = true;
-            $errors['message'] = 'Ошибка! Запрос не может быть пустым или содержать меньше 3 символов.';
+            $errors['message'] = 'Некорректный запрос';
         }
 
-        $body = $this->twig->render('search.twig', compact('searchKey', 'searchData', 'errors'));
+        $body = $this->twig->render('search.twig', compact('query', 'searchData', 'errors'));
         $response->getBody()->write($body);
         return $response;
     }
